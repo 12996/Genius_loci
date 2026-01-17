@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>万物有灵 Animism</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 主页（取景器界面） -->
+    <div id="home-screen" class="screen active">
+        <header class="header">
+            <h1 class="title">万物有灵</h1>
+            <p class="subtitle">Animism</p>
+        </header>
+
+        <main class="main-content">
+            <!-- 取景器 -->
+            <div class="viewfinder-container">
+                <div class="viewfinder-ring"></div>
+                <div class="viewfinder-inner">
+                    <video id="camera-preview" class="camera-preview" autoplay playsinline></video>
+                    <canvas id="photo-canvas" class="photo-canvas"></canvas>
+                    <div class="viewfinder-crosshair"></div>
+                </div>
+                <div class="glow-effect"></div>
+            </div>
+
+            <!-- 拖拽上传区域 -->
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-zone-content">
+                    <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+                    </svg>
+                    <p class="drop-zone-text">拖拽图片到这里</p>
+                    <p class="drop-zone-subtext">或点击选择文件</p>
+                </div>
+                <input type="file" id="file-input" class="file-input" accept="image/*" multiple>
+            </div>
+
+            <!-- 桌面端按钮 -->
+            <button id="awaken-btn" class="awaken-btn desktop-only">
+                <svg class="ghost-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2a9 9 0 00-9 9v11a2 2 0 002 2h14a2 2 0 002-2v-11a9 9 0 00-9-9zm-3 10a2 2 0 110-4 2 2 0 010 4zm6 0a2 2 0 110-4 2 2 0 010 4z"/>
+                </svg>
+                点击唤醒万物
+            </button>
+
+            <!-- 移动端浮动按钮 -->
+            <button id="camera-fab" class="camera-fab mobile-only" aria-label="拍照">
+                <svg class="camera-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z"/>
+                    <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                </svg>
+                <div class="steam-effect"></div>
+            </button>
+        </main>
+
+        <!-- 位置信息显示 -->
+        <div id="location-info" class="location-info">
+            <svg class="location-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/>
+            </svg>
+            <span id="location-text">获取位置中...</span>
+        </div>
+    </div>
+
+    <!-- 聊天界面 -->
+    <div id="chat-screen" class="screen">
+        <header class="chat-header">
+            <button id="back-btn" class="back-btn" aria-label="返回">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </button>
+            <div class="spirit-avatar">
+                <svg class="ghost-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2a9 9 0 00-9 9v11a2 2 0 002 2h14a2 2 0 002-2v-11a9 9 0 00-9-9zm-3 10a2 2 0 110-4 2 2 0 010 4zm6 0a2 2 0 110-4 2 2 0 010 4z"/>
+                </svg>
+            </div>
+            <h2 class="spirit-name" id="spirit-name">茶壶地灵</h2>
+        </header>
+
+        <main class="chat-messages" id="chat-messages">
+            <div class="message user-message">
+                <div class="message-bubble">你好！我想听听你的故事。</div>
+            </div>
+            <div class="message spirit-message">
+                <div class="message-bubble">
+                    呀呵,被你发现了。我肚子里的故事正热着呢。
+                </div>
+            </div>
+        </main>
+
+        <footer class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input" placeholder="和万物对话...">
+            <button id="send-btn" class="send-btn" aria-label="发送">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </footer>
+    </div>
+
+    <!-- 照片预览模态框 -->
+    <div id="photo-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn" aria-label="关闭">&times;</button>
+            <img id="captured-photo" class="captured-photo" src="" alt="拍摄的照片">
+            <div class="modal-actions">
+                <button id="retake-btn" class="btn-secondary">重拍</button>
+                <button id="use-photo-btn" class="btn-primary">使用这张照片</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
