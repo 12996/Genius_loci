@@ -392,6 +392,8 @@ class SupabaseService:
             min_lon = longitude - lon_delta
             max_lon = longitude + lon_delta
 
+            logger.info(f"查询地理范围: lat[{min_lat:.6f}, {max_lat:.6f}], lon[{min_lon:.6f}, {max_lon:.6f}]")
+
             # 查询该范围内的所有对话消息
             # 首先获取该范围内的对话ID
             conv_result = self.client.table('conversations') \
@@ -404,11 +406,14 @@ class SupabaseService:
                 .execute()
 
             if not conv_result.data:
+                logger.info("未找到附近对话，返回空列表")
                 return {
                     'success': True,
                     'data': [],
                     'count': 0
                 }
+
+            logger.info(f"找到 {len(conv_result.data)} 个附近对话")
 
             # 获取这些对话的消息
             conversation_ids = [c['id'] for c in conv_result.data]
@@ -420,6 +425,8 @@ class SupabaseService:
                 .limit(limit) \
                 .execute()
 
+            logger.info(f"获取到 {len(messages_result.data)} 条消息")
+
             return {
                 'success': True,
                 'data': messages_result.data,
@@ -427,7 +434,7 @@ class SupabaseService:
             }
 
         except Exception as e:
-            logger.error(f"查询附近对话失败: {e}")
+            logger.error(f"查询附近对话失败: {e}", exc_info=True)
             return {
                 'success': False,
                 'error': str(e)

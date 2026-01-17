@@ -143,9 +143,11 @@ class ChatService:
             附近的消息列表
         """
         if not self.supabase_service:
-            return []
+            logger.warning("数据库服务未启用，无法查询附近对话记忆")
+            return None
 
         try:
+            logger.info(f"调用数据库服务查询附近对话: lat={latitude}, lon={longitude}, radius={radius_km}km")
             result = self.supabase_service.get_nearby_conversations(
                 latitude=latitude,
                 longitude=longitude,
@@ -154,12 +156,15 @@ class ChatService:
             )
 
             if result.get('success'):
+                memory_count = len(result.get('data', []))
+                logger.info(f"数据库查询成功，返回 {memory_count} 条对话记忆")
                 return result.get('data', [])
-
-            return []
+            else:
+                logger.error(f"数据库查询失败: {result.get('error', '未知错误')}")
+                return []
 
         except Exception as e:
-            logger.error(f"获取附近对话记忆失败: {e}")
+            logger.error(f"获取附近对话记忆异常: {e}", exc_info=True)
             return []
 
     def analyze_emotion(self, text: str) -> Dict:

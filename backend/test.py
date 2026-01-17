@@ -6,10 +6,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SUPABASE_URL='https://qellabwecrxngwuqofdh.supabase.co'
-SUPABASE_KEY='sb_publishable_1HjMWBEAcq5RgoMkSpNyYg_6oBhtMHe'
+SUPABASE_KEY="sb_publishable_ormJ_ggEZRIpxaI3lp6qZQ_IACLFvzJ"
 
 supabase: Client = create_client(
         SUPABASE_URL,
         SUPABASE_KEY,
 )
-

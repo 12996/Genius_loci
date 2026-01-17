@@ -66,12 +66,6 @@ try:
     # ==================== 1. users表测试 ====================
     print_section("1. users 表测试")
 
-    print("\n[a] 创建用户")
-    result = db.create_user({
-        'username': '测试用户',
-        'email': 'test@example.com',
-        'device_id': 'test_device_001'
-    })
     print_result(result)
     if result['success']:
         test_data['user_id'] = result['data']['id']
